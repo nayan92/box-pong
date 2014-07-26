@@ -87,6 +87,7 @@ public class NetworkManager : MonoBehaviour {
 	[RPC]
 	public void StartGame() {
 		gameStarted = true;
+		gameManager.SpawnPlayer(playerNumber);
 		// gameManager stuff here:
 		//   - playerNumber contains the clients playerNumber.
 		//   - playerNames contains the list of playerNames in order of their playerNumbers. 

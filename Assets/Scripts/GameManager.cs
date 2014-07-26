@@ -21,9 +21,13 @@ public class GameManager : MonoBehaviour {
 	public GameObject playerPrefab;
 
 	// Cube dimensions
-	private const float CUBE_SIZE = 5.0f; // 5x5x5 cube
-	private const float CS2 = CUBE_SIZE/2;
+	private const float CUBE_SIZE = 10.0f; // 10x10x10 cube
+	private const float CS2 = CUBE_SIZE / 2;
 	private const float CAM_DEPTH = 15.0f; // how far back the camera is
+
+	// Camera object
+	public GameObject camera;
+
 
 	// Basis vectors for player movement for each face. 
 	// For each face, we give the two vectors that define what is right movement and what is up movement 
@@ -37,8 +41,8 @@ public class GameManager : MonoBehaviour {
 		{new Vector3(-1.0f,0.0f,0.0f), new Vector3(0.0f,1.0f,0.0f)}  // B
 	};
 
-	// Swawn points for players (initial position for player prefab)
-	// and swawn rotations (initial rotation for player prefab - to align flat on cube face)
+	// Spawn points for players (initial position for player prefab)
+	// and spawn rotations (initial rotation for player prefab - to align flat on cube face)
 	private static Vector3[] playerSpawnPositions = new Vector3[NUM_FACES] {
 		new Vector3(0.0f,0.0f,-CS2), // F
 		new Vector3(-CS2,0.0f,0.0f), // L
@@ -49,12 +53,12 @@ public class GameManager : MonoBehaviour {
 	};
 	// TODO: fix these quaternions
 	private static Quaternion[] playerSpawnRotations = new Quaternion[NUM_FACES] {
-		Quaternion.identity, // F
-		Quaternion.identity, // L
-		Quaternion.identity, // R
-		Quaternion.identity, // U
-		Quaternion.identity, // D
-		Quaternion.identity  // B 
+		Quaternion.LookRotation(new Vector3(0.0f,0.0f,1.0f),new Vector3(0.0f,1.0f,0.0f)), // F
+		Quaternion.LookRotation(new Vector3(1.0f,0.0f,0.0f),new Vector3(0.0f,1.0f,0.0f)), // L
+		Quaternion.LookRotation(new Vector3(-1.0f,0.0f,0.0f),new Vector3(0.0f,1.0f,0.0f)), // R
+		Quaternion.LookRotation(new Vector3(0.0f,-1.0f,0.0f),new Vector3(0.0f,0.0f,1.0f)), // U
+		Quaternion.LookRotation(new Vector3(0.0f,1.0f,0.0f),new Vector3(0.0f,0.0f,-1.0f)), // D
+		Quaternion.LookRotation(new Vector3(0.0f,0.0f,-1.0f),new Vector3(0.0f,1.0f,0.0f))  // B  
 	};
 
 	// TODO: fix these camera positions
@@ -79,36 +83,28 @@ public class GameManager : MonoBehaviour {
 
 	// Ingame Data
 	// -----------
-	private UnityEngine.Object[] playerObjects = new UnityEngine.Object[MAX_PLAYERS];
-	private int[] playerHealths = new int[MAX_PLAYERS];
-	private bool[] playerIsConnected = new bool[MAX_PLAYERS] { false, false, false, false, false, false };
-	private enum GameStatus {Waiting, InProgress, Finished};
-	private GameStatus status = GameStatus.Waiting;
-	private int numPlayers = 0;
+	//private UnityEngine.Object[] playerObjects = new UnityEngine.Object[MAX_PLAYERS];
+	//private int[] playerHealths = new int[MAX_PLAYERS];
+	//private bool[] playerIsConnected = new bool[MAX_PLAYERS] { false, false, false, false, false, false };
+	//private enum GameStatus {Waiting, InProgress, Finished};
+	//private GameStatus status = GameStatus.Waiting;
+	//private int numPlayers = 0;
 
 	
 	void Start() {
 	}
 
-	public void SpawnPlayer() {
-		if (NewPlayerCanJoin()) {
-			int newPlayerIdx = numPlayers++;
-			playerHealths[newPlayerIdx] = 100;
-			playerIsConnected[newPlayerIdx] = true;
-			playerObjects[newPlayerIdx] = Network.Instantiate(playerPrefab, 
-			                                       playerSpawnPositions[newPlayerIdx], 
-			                                       playerSpawnRotations[newPlayerIdx], 
-			                                       0);
+	public void SpawnPlayer(int playerNum) {
+		Debug.Log ("Player num: " + playerNum);
+		Network.Instantiate(playerPrefab,
+		                    playerSpawnPositions[playerNum], 
+			                playerSpawnRotations[playerNum],
+		                    0);
 
-		} else {
-			Debug.Log ("Player cannot join, game is full");
-		}
+		camera.transform.position = cameraPositions [playerNum];
+		camera.transform.rotation = cameraRotations [playerNum];
 	}
 
-	bool NewPlayerCanJoin() {
-		return numPlayers < MAX_PLAYERS;
-	}
-	
 	// Update is called once per frame
 	void Update() {
 	

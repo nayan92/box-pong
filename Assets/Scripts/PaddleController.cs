@@ -9,6 +9,8 @@ public class PaddleController : MonoBehaviour {
 	private float syncTime = 0f;
 	private Vector3 syncStartPosition = Vector3.zero;
 	private Vector3 syncEndPosition = Vector3.zero;
+
+	private 
 	
 	void OnSerializeNetworkView(BitStream stream, NetworkMessageInfo info) {
 		Vector3 syncPosition = Vector3.zero;
@@ -47,19 +49,20 @@ public class PaddleController : MonoBehaviour {
 	
 	private void InputMovement() {
 		if (Input.GetKey(KeyCode.W)) {
-			rigidbody.MovePosition(rigidbody.position + Vector3.forward * speed * Time.deltaTime);
+			rigidbody.MovePosition(rigidbody.position + transform.up * speed * Time.deltaTime);
+//			transform.Translate(Vector3.up * speed * Time.deltaTime);
 		}
 		
 		if (Input.GetKey(KeyCode.S)) {
-			rigidbody.MovePosition(rigidbody.position - Vector3.forward * speed * Time.deltaTime);
+			rigidbody.MovePosition(rigidbody.position - transform.up * speed * Time.deltaTime);
 		}
 		
 		if (Input.GetKey(KeyCode.D)) {
-			rigidbody.MovePosition(rigidbody.position + Vector3.right * speed * Time.deltaTime);
+			rigidbody.MovePosition(rigidbody.position + transform.right * speed * Time.deltaTime);
 		}
 		
 		if (Input.GetKey(KeyCode.A)) {
-			rigidbody.MovePosition(rigidbody.position - Vector3.right * speed * Time.deltaTime);
+			rigidbody.MovePosition(rigidbody.position - transform.right * speed * Time.deltaTime);
 		}
 	}
 	
