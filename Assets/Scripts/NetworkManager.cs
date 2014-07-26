@@ -6,7 +6,7 @@ public class NetworkManager : MonoBehaviour {
 	private const string gameName = "Room";
 	
 	private HostData[] hostList;
-	
+	public GameManager gameManager;
 	public GameObject playerPrefab;
 	
 	void OnGUI() {
@@ -53,10 +53,11 @@ public class NetworkManager : MonoBehaviour {
 	}
 	
 	void OnConnectedToServer() {
-		SpawnPlayer();
+		// SpawnPlayer();
+		gameManager.SpawnPlayer();
 	}
 	
 	private void SpawnPlayer() {
-		Network.Instantiate(playerPrefab, Vector3.up, Quaternion.identity, 0);
+		// Network.Instantiate(playerPrefab, Vector3.up, Quaternion.identity, 0);
 	}
 }
