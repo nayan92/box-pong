@@ -1,16 +1,24 @@
 ﻿using UnityEngine;
-using System.Collections;
+using System.Collections.Generic;
 
 public class NetworkManager : MonoBehaviour {
 	private const string typeName = "Box_Pong";
-	private const string gameName = "Room";
-	
+	private const int maxPlayers = 6;
+
+	private string roomName = "Room Name";
+	private string playerName = "Player Name";
+	private int playerNumber;
+	private List<string> playerNames = new List<string>();
 	private HostData[] hostList;
+	private bool gameStarted = false;
+
 	public GameManager gameManager;
-	
+
 	void OnGUI() {
 		if (!Network.isClient && !Network.isServer) {
-			if (GUI.Button(new Rect(100, 100, 250, 100), "Start Server")) {
+			playerName = GUI.TextArea(new Rect(Screen.width / 2 - 125, 10, 250, 20), playerName);
+			roomName = GUI.TextArea(new Rect(100, 75, 250, 20), roomName);
+			if (GUI.Button(new Rect(100, 100, 250, 100), "Host Room")) {
 				StartServer();
 			}
 			
@@ -25,16 +33,31 @@ public class NetworkManager : MonoBehaviour {
 					}
 				}
 			}
+
+		} else if(!gameStarted) {
+			GUI.Label(new Rect (2, 2, 150, 20), playerNumber.ToString());
+			GUI.Label(new Rect (2, 20, 150, 120), string.Join("\n", playerNames.ToArray()));
+			if (Network.isServer && playerNames.Count > 1 && GUI.Button(new Rect(100, 100, 250, 100), "Start Game")) {
+				networkView.RPC("StartGame", RPCMode.AllBuffered); 
+			}
 		}
 	}
 	
 	private void StartServer() {
 		Network.InitializeServer(5, 25000, !Network.HavePublicAddress());
-		MasterServer.RegisterHost(typeName, gameName);
+		MasterServer.RegisterHost(typeName, roomName);
 	}
 	
 	void OnServerInitialized() {
-		SpawnPlayer();
+		SendName();
+	}
+
+	void OnPlayerConnected(NetworkPlayer player) {
+		if(playerNames.Count < maxPlayers) {
+			networkView.RPC("ServerAccepted", player);
+		} else {
+			networkView.RPC("ServerFull", player);
+		}
 	}
 	
 	private void RefreshHostList() {
@@ -50,13 +73,32 @@ public class NetworkManager : MonoBehaviour {
 	private void JoinServer(HostData hostData) {
 		Network.Connect(hostData);
 	}
-	
-	void OnConnectedToServer() {
-		// SpawnPlayer();
-		gameManager.SpawnPlayer();
+
+	private void SendName() {
+		playerNumber = playerNames.Count;
+		networkView.RPC("InsertPlayer", RPCMode.AllBuffered, playerName); 
 	}
 	
-	private void SpawnPlayer() {
-		// Network.Instantiate(playerPrefab, Vector3.up, Quaternion.identity, 0);
+	[RPC]
+	public void InsertPlayer(string name) {
+		playerNames.Add(name);
+	}
+
+	[RPC]
+	public void StartGame() {
+		gameStarted = true;
+		// gameManager stuff here:
+		//   - playerNumber contains the clients playerNumber.
+		//   - playerNames contains the list of playerNames in order of their playerNumbers. 
+	}
+
+	[RPC]
+	public void ServerAccepted() {
+		SendName();
+	}
+
+	[RPC]
+	public void ServerFull() {
+		Network.Disconnect();
 	}
 }
