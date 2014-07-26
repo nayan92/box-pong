@@ -10,8 +10,6 @@ public class PaddleController : MonoBehaviour {
 	private Vector3 syncStartPosition = Vector3.zero;
 	private Vector3 syncEndPosition = Vector3.zero;
 	
-	//	private Vector3 syncPosition = Vector3.zero;
-	
 	void OnSerializeNetworkView(BitStream stream, NetworkMessageInfo info) {
 		Vector3 syncPosition = Vector3.zero;
 		Vector3 syncVelocity = Vector3.zero;
@@ -39,9 +37,7 @@ public class PaddleController : MonoBehaviour {
 	}
 	
 	void Update() {
-		Debug.Log ("Update");
 		if (networkView.isMine) {
-			Debug.Log("Network vew is mine.");
 			InputMovement();
 		} else {
 			SyncedMovement();
@@ -51,7 +47,6 @@ public class PaddleController : MonoBehaviour {
 	
 	private void InputMovement() {
 		if (Input.GetKey(KeyCode.W)) {
-			Debug.Log("Pressing W ahoy");
 			rigidbody.MovePosition(rigidbody.position + Vector3.forward * speed * Time.deltaTime);
 		}
 		
@@ -71,6 +66,5 @@ public class PaddleController : MonoBehaviour {
 	private void SyncedMovement() {
 		syncTime += Time.deltaTime;
 		rigidbody.position = Vector3.Lerp(syncStartPosition, syncEndPosition, syncTime / syncDelay);
-		//		rigidbody.position = syncPosition;
 	}
 }
