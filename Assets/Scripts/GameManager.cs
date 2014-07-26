@@ -22,18 +22,19 @@ public class GameManager : MonoBehaviour {
 
 	// Cube dimensions
 	private const float CUBE_SIZE = 5.0f; // 5x5x5 cube
-	private const float CS2 = CUBE_SIZE/2; 
+	private const float CS2 = CUBE_SIZE/2;
+	private const float CAM_DEPTH = 15.0f; // how far back the camera is
 
 	// Basis vectors for player movement for each face. 
-	// For each face, we give the two vectors that define what is up movement and what is right movement 
-	// from perspective of the player
+	// For each face, we give the two vectors that define what is right movement and what is up movement 
+	// respectively from perspective of the player
 	private static Vector3[,] playerVelocityBases = new Vector3[NUM_FACES,2] {
-		{new Vector3(1.0f,1.0f,1.0f), new Vector3(1.0f,1.0f,1.0f)}, // F
-		{new Vector3(1.0f,1.0f,1.0f), new Vector3(1.0f,1.0f,1.0f)}, // L
-		{new Vector3(1.0f,1.0f,1.0f), new Vector3(1.0f,1.0f,1.0f)}, // R
-		{new Vector3(1.0f,1.0f,1.0f), new Vector3(1.0f,1.0f,1.0f)}, // U
-		{new Vector3(1.0f,1.0f,1.0f), new Vector3(1.0f,1.0f,1.0f)}, // D
-		{new Vector3(1.0f,1.0f,1.0f), new Vector3(1.0f,1.0f,1.0f)}  // B
+		{new Vector3(1.0f,0.0f,0.0f), new Vector3(0.0f,1.0f,0.0f)}, // F
+		{new Vector3(0.0f,0.0f,-1.0f), new Vector3(0.0f,1.0f,0.0f)}, // L
+		{new Vector3(0.0f,0.0f,1.0f), new Vector3(0.0f,1.0f,0.0f)}, // R
+		{new Vector3(1.0f,0.0f,0.0f), new Vector3(0.0f,0.0f,1.0f)}, // U
+		{new Vector3(1.0f,0.0f,0.0f), new Vector3(0.0f,1.0f,-1.0f)}, // D
+		{new Vector3(-1.0f,0.0f,0.0f), new Vector3(0.0f,1.0f,0.0f)}  // B
 	};
 
 	// Swawn points for players (initial position for player prefab)
@@ -54,6 +55,25 @@ public class GameManager : MonoBehaviour {
 		Quaternion.identity, // U
 		Quaternion.identity, // D
 		Quaternion.identity  // B 
+	};
+
+	// TODO: fix these camera positions
+	private static Vector3[] cameraPositions = new Vector3[NUM_FACES] {
+		new Vector3(0.0f,0.0f,-CAM_DEPTH), // F
+		new Vector3(-CAM_DEPTH,0.0f,0.0f), // L
+		new Vector3(CAM_DEPTH,0.0f,0.0f),  // R
+		new Vector3(0.0f,CAM_DEPTH,0.0f),  // U
+		new Vector3(0.0f,-CAM_DEPTH,0.0f), // D
+		new Vector3(0.0f,0.0f,CAM_DEPTH)   // B 
+	};
+	// TODO: fix these camera rotations
+	private static Quaternion[] cameraRotations = new Quaternion[NUM_FACES] {
+		Quaternion.LookRotation(new Vector3(0.0f,0.0f,1.0f),new Vector3(0.0f,1.0f,0.0f)), // F
+		Quaternion.LookRotation(new Vector3(1.0f,0.0f,0.0f),new Vector3(0.0f,1.0f,0.0f)), // L
+		Quaternion.LookRotation(new Vector3(-1.0f,0.0f,0.0f),new Vector3(0.0f,1.0f,0.0f)), // R
+		Quaternion.LookRotation(new Vector3(0.0f,-1.0f,0.0f),new Vector3(0.0f,0.0f,1.0f)), // U
+		Quaternion.LookRotation(new Vector3(0.0f,1.0f,0.0f),new Vector3(0.0f,0.0f,-1.0f)), // D
+		Quaternion.LookRotation(new Vector3(0.0f,0.0f,-1.0f),new Vector3(0.0f,1.0f,0.0f))  // B 
 	};
 
 
