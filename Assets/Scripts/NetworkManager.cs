@@ -34,7 +34,7 @@ public class NetworkManager : MonoBehaviour {
 	}
 	
 	void OnServerInitialized() {
-		SpawnPlayer();
+		gameManager.SpawnPlayer();
 	}
 	
 	private void RefreshHostList() {
@@ -52,11 +52,6 @@ public class NetworkManager : MonoBehaviour {
 	}
 	
 	void OnConnectedToServer() {
-		// SpawnPlayer();
 		gameManager.SpawnPlayer();
-	}
-	
-	private void SpawnPlayer() {
-		// Network.Instantiate(playerPrefab, Vector3.up, Quaternion.identity, 0);
 	}
 }
