@@ -17,32 +17,19 @@ public class GameManager : MonoBehaviour {
 	private const int MAX_PLAYERS = NUM_FACES; // an alias 
 	private enum Faces {Front, Left, Right, Up, Down, Back};
 
-	// Prefab for the paddle
+	// Prefab for the paddle.
 	public GameObject playerPrefab;
 
-	// Cube dimensions
+	// Cube dimensions.
 	private const float CUBE_SIZE = 10.0f; // 10x10x10 cube
 	private const float CS2 = CUBE_SIZE / 2;
 	private const float CAM_DEPTH = 15.0f; // how far back the camera is
 
-	// Camera object
+	// Camera object.
 	public GameObject camera;
+	
 
-
-	// Basis vectors for player movement for each face. 
-	// For each face, we give the two vectors that define what is right movement and what is up movement 
-	// respectively from perspective of the player
-	private static Vector3[,] playerVelocityBases = new Vector3[NUM_FACES,2] {
-		{new Vector3(1.0f,0.0f,0.0f), new Vector3(0.0f,1.0f,0.0f)}, // F
-		{new Vector3(0.0f,0.0f,-1.0f), new Vector3(0.0f,1.0f,0.0f)}, // L
-		{new Vector3(0.0f,0.0f,1.0f), new Vector3(0.0f,1.0f,0.0f)}, // R
-		{new Vector3(1.0f,0.0f,0.0f), new Vector3(0.0f,0.0f,1.0f)}, // U
-		{new Vector3(1.0f,0.0f,0.0f), new Vector3(0.0f,1.0f,-1.0f)}, // D
-		{new Vector3(-1.0f,0.0f,0.0f), new Vector3(0.0f,1.0f,0.0f)}  // B
-	};
-
-	// Spawn points for players (initial position for player prefab)
-	// and spawn rotations (initial rotation for player prefab - to align flat on cube face)
+	// Spawn points for players (initial position for player prefab).
 	private static Vector3[] playerSpawnPositions = new Vector3[NUM_FACES] {
 		new Vector3(0.0f,0.0f,-CS2), // F
 		new Vector3(-CS2,0.0f,0.0f), // L
@@ -51,7 +38,8 @@ public class GameManager : MonoBehaviour {
 		new Vector3(0.0f,-CS2,0.0f), // D
 		new Vector3(0.0f,0.0f,CS2)   // B
 	};
-	// TODO: fix these quaternions
+
+	// Spawn rotations for players (initial rotation for player prefab - to align flat on cube face.
 	private static Quaternion[] playerSpawnRotations = new Quaternion[NUM_FACES] {
 		Quaternion.LookRotation(new Vector3(0.0f,0.0f,1.0f),new Vector3(0.0f,1.0f,0.0f)), // F
 		Quaternion.LookRotation(new Vector3(1.0f,0.0f,0.0f),new Vector3(0.0f,1.0f,0.0f)), // L
@@ -61,7 +49,7 @@ public class GameManager : MonoBehaviour {
 		Quaternion.LookRotation(new Vector3(0.0f,0.0f,-1.0f),new Vector3(0.0f,1.0f,0.0f))  // B  
 	};
 
-	// TODO: fix these camera positions
+	// Camera position for players.
 	private static Vector3[] cameraPositions = new Vector3[NUM_FACES] {
 		new Vector3(0.0f,0.0f,-CAM_DEPTH), // F
 		new Vector3(-CAM_DEPTH,0.0f,0.0f), // L
@@ -70,7 +58,8 @@ public class GameManager : MonoBehaviour {
 		new Vector3(0.0f,-CAM_DEPTH,0.0f), // D
 		new Vector3(0.0f,0.0f,CAM_DEPTH)   // B 
 	};
-	// TODO: fix these camera rotations
+
+	// Camera rotations for players.
 	private static Quaternion[] cameraRotations = new Quaternion[NUM_FACES] {
 		Quaternion.LookRotation(new Vector3(0.0f,0.0f,1.0f),new Vector3(0.0f,1.0f,0.0f)), // F
 		Quaternion.LookRotation(new Vector3(1.0f,0.0f,0.0f),new Vector3(0.0f,1.0f,0.0f)), // L
@@ -79,17 +68,6 @@ public class GameManager : MonoBehaviour {
 		Quaternion.LookRotation(new Vector3(0.0f,1.0f,0.0f),new Vector3(0.0f,0.0f,-1.0f)), // D
 		Quaternion.LookRotation(new Vector3(0.0f,0.0f,-1.0f),new Vector3(0.0f,1.0f,0.0f))  // B 
 	};
-
-
-	// Ingame Data
-	// -----------
-	//private UnityEngine.Object[] playerObjects = new UnityEngine.Object[MAX_PLAYERS];
-	//private int[] playerHealths = new int[MAX_PLAYERS];
-	//private bool[] playerIsConnected = new bool[MAX_PLAYERS] { false, false, false, false, false, false };
-	//private enum GameStatus {Waiting, InProgress, Finished};
-	//private GameStatus status = GameStatus.Waiting;
-	//private int numPlayers = 0;
-
 	
 	void Start() {
 	}

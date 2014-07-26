@@ -50,7 +50,6 @@ public class PaddleController : MonoBehaviour {
 	private void InputMovement() {
 		if (Input.GetKey(KeyCode.W)) {
 			rigidbody.MovePosition(rigidbody.position + transform.up * speed * Time.deltaTime);
-//			transform.Translate(Vector3.up * speed * Time.deltaTime);
 		}
 		
 		if (Input.GetKey(KeyCode.S)) {
