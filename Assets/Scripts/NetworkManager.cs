@@ -7,7 +7,6 @@ public class NetworkManager : MonoBehaviour {
 	
 	private HostData[] hostList;
 	public GameManager gameManager;
-	public GameObject playerPrefab;
 	
 	void OnGUI() {
 		if (!Network.isClient && !Network.isServer) {
