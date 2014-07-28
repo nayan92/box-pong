@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class GameManager : MonoBehaviour {
 
@@ -15,7 +16,6 @@ public class GameManager : MonoBehaviour {
 	//  x--> x    
 	private const int NUM_FACES = 6;
 	private const int MAX_PLAYERS = NUM_FACES; // an alias 
-	private enum Faces {Front, Left, Right, Up, Down, Back};
 
 	// Prefab for the paddle.
 	public GameObject playerPrefab;
@@ -27,7 +27,16 @@ public class GameManager : MonoBehaviour {
 
 	// Camera object.
 	public GameObject camera;
-	
+
+	// Id to reference ourself
+	public int playerId;
+
+	// Game state
+	public bool gameStarted = false;
+
+	// The number of lives for players.
+	private const int INITIAL_HEALTH = 50;
+	private int[] playerLives = new int[NUM_FACES];
 
 	// Spawn points for players (initial position for player prefab).
 	private static Vector3[] playerSpawnPositions = new Vector3[NUM_FACES] {
@@ -68,23 +77,62 @@ public class GameManager : MonoBehaviour {
 		Quaternion.LookRotation(new Vector3(0.0f,1.0f,0.0f),new Vector3(0.0f,0.0f,-1.0f)), // D
 		Quaternion.LookRotation(new Vector3(0.0f,0.0f,-1.0f),new Vector3(0.0f,1.0f,0.0f))  // B 
 	};
-	
-	void Start() {
+
+	void Awake() {
+		initialiseHealth ();
 	}
 
+	// Update is called once per frame
+	void Update() {
+	}
+
+	void OnGUI() {
+		if (gameStarted) {
+			for (int i = 0; i < playerLives.Length; i++) {
+				GUI.Label (new Rect (2, 2 + (20 * i), 40, 20), i.ToString() + ": " + playerLives [i]);
+				if (i == playerId) {
+					GUI.Label (new Rect (42, 2 + (20 * i), 30, 20), "<<<<");
+				}
+			}
+		}
+	}
+
+	// Called once by each new player (including host).
 	public void SpawnPlayer(int playerNum) {
-		Debug.Log ("Player num: " + playerNum);
+		// Create paddle (Note: Network.Instantiate is an RPC call).
 		Network.Instantiate(playerPrefab,
 		                    playerSpawnPositions[playerNum], 
 			                playerSpawnRotations[playerNum],
 		                    0);
 
+		/// Position camera
 		camera.transform.position = cameraPositions [playerNum];
 		camera.transform.rotation = cameraRotations [playerNum];
+
+		gameStarted = true;
+		playerId = playerNum;
 	}
 
-	// Update is called once per frame
-	void Update() {
+	public void handleWallHit(Faces wallFace) {
+		if (Network.isServer && gameStarted) {
+			int playerNum = getPlayerId(wallFace);
+			networkView.RPC("decreaseHealth", RPCMode.AllBuffered, playerNum);
+		}
+	}
+
+	private int getPlayerId(Faces wall) {
+		// Important: depends on the order of the enums in Faces.
+		return (int) wall;
+	}
 	
+	private void initialiseHealth() {
+		for (int i = 0; i < playerLives.Length; i++) {
+			playerLives [i] = INITIAL_HEALTH;
+		}
+	}
+
+	[RPC]
+	public void decreaseHealth(int playerNum) {
+		playerLives [playerNum] -= 5;
 	}
 }

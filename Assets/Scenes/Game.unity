@@ -113,6 +113,14 @@ Prefab:
       propertyPath: m_RootOrder
       value: 5
       objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 71fbde0d34a315741b02fe443bf0381e, type: 2}
+      propertyPath: wallPosition
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 71fbde0d34a315741b02fe443bf0381e, type: 2}
+      propertyPath: gameManager
+      value: 
+      objectReference: {fileID: 860988365}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 71fbde0d34a315741b02fe443bf0381e, type: 2}
   m_RootGameObject: {fileID: 436707500}
@@ -157,6 +165,14 @@ Prefab:
       propertyPath: m_RootOrder
       value: 4
       objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 71fbde0d34a315741b02fe443bf0381e, type: 2}
+      propertyPath: wallPosition
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 71fbde0d34a315741b02fe443bf0381e, type: 2}
+      propertyPath: gameManager
+      value: 
+      objectReference: {fileID: 860988365}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 71fbde0d34a315741b02fe443bf0381e, type: 2}
   m_RootGameObject: {fileID: 1236744154}
@@ -201,6 +217,14 @@ Prefab:
       propertyPath: m_RootOrder
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 71fbde0d34a315741b02fe443bf0381e, type: 2}
+      propertyPath: wallPosition
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 71fbde0d34a315741b02fe443bf0381e, type: 2}
+      propertyPath: gameManager
+      value: 
+      objectReference: {fileID: 860988365}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 71fbde0d34a315741b02fe443bf0381e, type: 2}
   m_RootGameObject: {fileID: 230624234}
@@ -293,6 +317,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   particlePrefab: {fileID: 19800000, guid: bec291cb85757e143a835bd2abb1fb02, type: 2}
+  wallPosition: 1
+  gameManager: {fileID: 860988365}
 --- !u!1 &241690696
 GameObject:
   m_ObjectHideFlags: 0
@@ -380,6 +406,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   particlePrefab: {fileID: 19800000, guid: bec291cb85757e143a835bd2abb1fb02, type: 2}
+  wallPosition: 0
+  gameManager: {fileID: 860988365}
 --- !u!1 &360098146
 GameObject:
   m_ObjectHideFlags: 0
@@ -500,6 +528,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   particlePrefab: {fileID: 19800000, guid: bec291cb85757e143a835bd2abb1fb02, type: 2}
+  wallPosition: 2
+  gameManager: {fileID: 860988365}
 --- !u!1001 &618428789
 Prefab:
   m_ObjectHideFlags: 0
@@ -539,6 +569,10 @@ Prefab:
       propertyPath: m_RootOrder
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 71fbde0d34a315741b02fe443bf0381e, type: 2}
+      propertyPath: gameManager
+      value: 
+      objectReference: {fileID: 860988365}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 71fbde0d34a315741b02fe443bf0381e, type: 2}
   m_RootGameObject: {fileID: 241690696}
@@ -684,6 +718,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   particlePrefab: {fileID: 19800000, guid: bec291cb85757e143a835bd2abb1fb02, type: 2}
+  wallPosition: 3
+  gameManager: {fileID: 860988365}
 --- !u!1 &860988364
 GameObject:
   m_ObjectHideFlags: 0
@@ -693,6 +729,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 860988366}
   - 114: {fileID: 860988365}
+  - 148: {fileID: 860988367}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -713,6 +750,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerPrefab: {fileID: 100000, guid: 414d47200f23d4948a1c55b795ad6b4d, type: 2}
   camera: {fileID: 1060806062}
+  playerId: 0
+  gameStarted: 0
 --- !u!4 &860988366
 Transform:
   m_ObjectHideFlags: 0
@@ -725,6 +764,18 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 5
+--- !u!148 &860988367
+NetworkView:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 860988364}
+  m_Enabled: 1
+  m_StateSynchronization: 0
+  m_Observed: {fileID: 860988366}
+  m_ViewID:
+    m_ID: 2
+    m_Type: 1
 --- !u!1 &926567248
 GameObject:
   m_ObjectHideFlags: 0
@@ -812,6 +863,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   particlePrefab: {fileID: 19800000, guid: bec291cb85757e143a835bd2abb1fb02, type: 2}
+  wallPosition: 4
+  gameManager: {fileID: 860988365}
 --- !u!1 &1060806062
 GameObject:
   m_ObjectHideFlags: 0
@@ -935,6 +988,14 @@ Prefab:
       propertyPath: m_RootOrder
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 71fbde0d34a315741b02fe443bf0381e, type: 2}
+      propertyPath: wallPosition
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 71fbde0d34a315741b02fe443bf0381e, type: 2}
+      propertyPath: gameManager
+      value: 
+      objectReference: {fileID: 860988365}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 71fbde0d34a315741b02fe443bf0381e, type: 2}
   m_RootGameObject: {fileID: 926567248}
@@ -1027,6 +1088,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   particlePrefab: {fileID: 19800000, guid: bec291cb85757e143a835bd2abb1fb02, type: 2}
+  wallPosition: 5
+  gameManager: {fileID: 860988365}
 --- !u!1001 &1274386753
 Prefab:
   m_ObjectHideFlags: 0
@@ -1196,6 +1259,14 @@ Prefab:
       propertyPath: m_RootOrder
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 71fbde0d34a315741b02fe443bf0381e, type: 2}
+      propertyPath: wallPosition
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 71fbde0d34a315741b02fe443bf0381e, type: 2}
+      propertyPath: gameManager
+      value: 
+      objectReference: {fileID: 860988365}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 71fbde0d34a315741b02fe443bf0381e, type: 2}
   m_RootGameObject: {fileID: 851823798}
